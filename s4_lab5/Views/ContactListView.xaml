@@ -1,0 +1,273 @@
+﻿<UserControl x:Class="s4_lab5.Views.ContactListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:s4_lab5.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle 
+            Grid.Row="1"
+            Grid.RowSpan="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0 0 10 0"
+            RadiusX="15"
+            RadiusY="15"
+            Fill="#3b3b3b"/>
+
+        <Label 
+                Content="Contact Book"
+                FontSize="24"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                />
+
+        <ListView
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.RowSpan="5"
+                Grid.ColumnSpan="3"
+                SelectionMode="Single"
+                ItemsSource="{Binding Contacts}"
+                SelectedItem="{Binding SelectedContact, Mode=TwoWay}"
+                Margin="20 20 30 20">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Surname">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Surname}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Phone">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Phone}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <materialDesign:Snackbar
+            Grid.Row="5"
+            Grid.RowSpan="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            MessageQueue="{Binding ContactSnackbarMessageQueue}"
+            />
+
+        <Button
+            Grid.Row="6"
+            Grid.Column="0"
+            Background="#61d428"
+            BorderBrush="#61d428"
+            HorizontalAlignment="Center"
+            Margin="0 0 20 0"
+            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+            Command="{Binding OpenCreateManageContactViewCommand}"
+            >
+            <materialDesign:PackIcon Kind="Plus" Foreground="White"/>
+
+        </Button>
+
+        <Button
+                Grid.Row="6"
+                Grid.Column="1"
+                Background="#eb343d"
+                BorderBrush="#eb343d"
+                HorizontalAlignment="Center"
+                Margin="0 0 20 0"
+                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                Command="{Binding DeleteSelectedContactCommand}"
+                >
+            <materialDesign:PackIcon Kind="Minus" Foreground="White"/>
+        </Button>
+
+        <Button
+                 Grid.Row="6"
+                 Grid.Column="2"
+                 Background="#eb8f34"
+                 BorderBrush="#eb8f34"
+                 HorizontalAlignment="Center"
+                 Margin="0 0 20 0"
+                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                 Command="{Binding OpenUpdateManageContactViewCommand}"
+                 >
+            <materialDesign:PackIcon Kind="Pen" Foreground="White"/>
+        </Button>
+
+
+        <materialDesign:SplitButton
+                Margin="3 0 3 0"
+                Grid.Row="1"
+                Grid.RowSpan="1"
+                Grid.Column="3"
+                Grid.ColumnSpan="1"
+                Content="Search"
+                VerticalAlignment="Bottom"
+                PopupPlacementMode="BottomAndAlignRightEdges"
+                Command="{Binding SearchContactsCommand}"
+                >
+            <materialDesign:SplitButton.PopupContent>
+                <ListBox
+                    SelectedValuePath="Text"
+                    SelectedValue="{Binding SelectedSeacrhByItem}"
+                    >
+                    <TextBlock Text="Name"/>
+                    <TextBlock Text="Surname"/>
+                    <TextBlock Text="Phone"/>
+                </ListBox>
+            </materialDesign:SplitButton.PopupContent>
+        </materialDesign:SplitButton>
+
+        <TextBox
+                Grid.Row="1"
+                Grid.RowSpan="1"
+                Grid.Column="4"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Bottom"
+                materialDesign:HintAssist.Hint="Searching Value"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Text="{Binding SearchValue}"
+                />
+
+
+        <materialDesign:SplitButton
+            Margin="3 0 3 0"
+            Grid.Row="2"
+            Grid.RowSpan="1"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Content="Sort"
+            VerticalAlignment="Center"
+            PopupPlacementMode="BottomAndAlignRightEdges"
+            Command="{Binding SortContactsCommand}"
+            >
+            <materialDesign:SplitButton.PopupContent>
+                <ListBox
+                    SelectedValuePath="Text"
+                    SelectedValue="{Binding SelectedSortByItem}"
+                    >
+                    <TextBlock Text="Ascending"/>
+                    <TextBlock Text="Descending"/>
+                </ListBox>
+            </materialDesign:SplitButton.PopupContent>
+        </materialDesign:SplitButton>
+
+        <materialDesign:SplitButton
+            Margin="3 0 3 0"
+            Grid.Row="3"
+            Grid.RowSpan="1"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Content="Transform"
+            VerticalAlignment="Center"
+            PopupPlacementMode="BottomAndAlignRightEdges"
+            Command="{Binding TransformContactsCommand}"
+            >
+            <materialDesign:SplitButton.PopupContent>
+                <ListBox
+                    SelectedValuePath="Text"
+                    SelectedValue="{Binding SelectedTransformByItem}"
+                    >
+                        <TextBlock Text="To Upper"/>
+                        <TextBlock Text="BiGsMaLl"/>
+                        <TextBlock Text="Delete Vowels"/>
+                </ListBox>
+            </materialDesign:SplitButton.PopupContent>
+        </materialDesign:SplitButton>
+
+        <materialDesign:SplitButton
+            Margin="3 0 3 0"
+            Grid.Row="4"
+            Grid.RowSpan="1"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Content="Check"
+            VerticalAlignment="Center"
+            PopupPlacementMode="BottomAndAlignRightEdges"
+            Command="{Binding CheckContactsCommand}"
+            >
+            <materialDesign:SplitButton.PopupContent>
+                <ListBox
+                    SelectedValuePath="Text"
+                    SelectedValue="{Binding SelectedCheckByItem}"
+                    >
+                    <TextBlock Text="Any Contact Name Length > 5"/>
+                    <TextBlock Text="Any Contact Name Length &lt; 5"/>
+                    <TextBlock Text="Any Contact Name Length == 5"/>
+                </ListBox>
+            </materialDesign:SplitButton.PopupContent>
+        </materialDesign:SplitButton>
+
+        <materialDesign:SplitButton
+            Margin="3 0 3 0"
+            Grid.Row="5"
+            Grid.RowSpan="1"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Content="Agregate"
+            VerticalAlignment="Center"
+            PopupPlacementMode="BottomAndAlignRightEdges"
+            Command="{Binding AgregateContactsCommand}"
+            >
+            <materialDesign:SplitButton.PopupContent>
+                <ListBox
+                    SelectedValuePath="Text"
+
+                    SelectedValue="{Binding SelectedAgregateByItem}"
+                    >
+                    <TextBlock Text="Average Name Length"/>
+                    <TextBlock Text="Average Surname Length"/>
+                    <TextBlock Text="Average Phone Length"/>
+                </ListBox>
+            </materialDesign:SplitButton.PopupContent>
+
+        </materialDesign:SplitButton>
+
+        <Button 
+            Grid.Row="6"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            BorderBrush="#de3c3c"
+            Background="#de3c3c"
+            Content="Reset"
+            Command="{Binding LoadContactsCommand}"
+            Margin="50 0 50 0"/>
+    </Grid>
+</UserControl>
